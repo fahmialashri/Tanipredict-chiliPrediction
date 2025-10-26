@@ -1026,15 +1026,17 @@
 
          /* Developer Section - Centered with Auto Slide */
 .developer {
-  padding: 5rem 2rem;
+  padding: 5rem 1rem;
   background: white;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 }
 
 .developer-container {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 2rem;
+  overflow-x: auto;
 }
 
 .developer-header {
@@ -1063,13 +1065,14 @@
   gap: 2rem;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2rem 0;
+  padding: 2rem 3rem 2rem 3rem;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
   position: relative;
+  margin: 0 auto;
 }
 
 .developer-scroll::-webkit-scrollbar {
@@ -1081,19 +1084,21 @@
   background: var(--bg1);
   border: 2px solid var(--primary-200);
   border-radius: 20px;
-  padding: 2.5rem 2rem;
-  min-width: 350px;
-  max-width: 350px;
-  height: 520px; /* Tinggi tetap untuk semua card */
+  padding: 2rem 2rem;
+  min-width: 320px;
+  max-width: 320px;
+  min-height: 580px;
+  height: auto;
   text-align: center;
   transition: all 0.5s ease;
   cursor: pointer;
   flex-shrink: 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  opacity: 0.7;
+  opacity: 0.6;
   transform: scale(0.9);
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .developer-card.active {
@@ -1101,6 +1106,7 @@
   transform: scale(1);
   border-color: var(--primary);
   box-shadow: 0 15px 50px rgba(5, 150, 105, 0.25);
+  z-index: 10;
 }
 
 .developer-card:hover {
@@ -1110,8 +1116,8 @@
 }
 
 .developer-avatar {
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin: 0 auto 1.5rem;
   border: 5px solid var(--primary);
@@ -1123,43 +1129,45 @@
   font-size: 3.5rem;
   box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
   flex-shrink: 0;
+  overflow: hidden;
 }
 
-
+.developer-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
 
 .developer-name {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text);
-  margin: 0 0 0.5rem 0;
-  min-height: 2.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 0 0 0.8rem 0;
+  display: block;
+  line-height: 1.4;
 }
 
 .developer-role {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--primary);
   font-weight: 600;
-  margin: 0 0 1rem 0;
-  min-height: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 0 0 1.2rem 0;
+  display: block;
+  line-height: 1.4;
 }
 
 .developer-description {
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.6;
   font-size: 0.95rem;
   margin: 0 0 1.5rem 0;
   flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  max-height: 100px;
+  display: block;
+  text-align: center;
+  overflow: visible;
+  height: auto;
+  min-height: 80px;
 }
 
 .developer-social {
@@ -1214,30 +1222,58 @@
   transform: scale(1.2);
 }
 
-/* Tablet Centered */
+/* Tablet */
 @media (max-width: 1024px) {
+  .developer {
+    padding: 4rem 1rem;
+  }
+
+  .developer-container {
+    padding: 0 1rem;
+  }
+
+  .developer-scroll {
+    padding: 2rem 1rem;
+  }
+
   .developer-card {
-    min-width: 300px;
-    max-width: 300px;
-    height: 480px;
+    min-width: 280px;
+    max-width: 280px;
+    min-height: 550px;
+    height: auto;
+  }
+
+  .developer-avatar {
+    width: 110px;
+    height: 110px;
   }
 }
 
-/* Mobile - Centered */
+/* Mobile */
 @media (max-width: 768px) {
   .developer {
-    padding: 3rem 1.5rem;
+    padding: 3rem 0.5rem;
   }
 
   .developer-header h2 {
     font-size: 2rem;
   }
 
-  .developer-card {
-    min-width: 280px;
-    max-width: 280px;
+  .developer-container {
+    padding: 0 0.5rem;
+  }
+
+  .developer-scroll {
     padding: 2rem 1.5rem;
-    height: 450px;
+    gap: 1.5rem;
+  }
+
+  .developer-card {
+    min-width: 260px;
+    max-width: 260px;
+    padding: 2rem 1.5rem;
+    min-height: 520px;
+    height: auto;
   }
 
   .developer-avatar {
@@ -1248,17 +1284,60 @@
 
   .developer-name {
     font-size: 1.2rem;
-    min-height: 2.4rem;
   }
 
   .developer-role {
-    font-size: 1rem;
-    min-height: 1.3rem;
+    font-size: 0.95rem;
   }
 
   .developer-description {
     font-size: 0.9rem;
-    max-height: 80px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .developer {
+    padding: 2rem 0.5rem;
+  }
+
+  .developer-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .developer-scroll {
+    padding: 2rem 0.5rem;
+  }
+
+  .developer-card {
+    min-width: 240px;
+    max-width: 240px;
+    padding: 1.5rem 1rem;
+    min-height: 480px;
+    height: auto;
+  }
+
+  .developer-avatar {
+    width: 90px;
+    height: 90px;
+    font-size: 2rem;
+  }
+
+  .developer-name {
+    font-size: 1.1rem;
+  }
+
+  .developer-role {
+    font-size: 0.9rem;
+  }
+
+  .developer-description {
+    font-size: 0.85rem;
+  }
+
+  .social-link {
+    width: 40px;
+    height: 40px;
   }
 }
       /* Footer */
@@ -1439,6 +1518,7 @@
           <li><a href="#Why-me">Why TaniPredict?</a></li>
           <li><a href="#fitur">Fitur</a></li>
           <li><a href="#kontak">Kontak</a></li>
+          <li><a href="#developers">Teams</a></li>
           <li><a href="login.html">Login</a></li>
         </ul>
       </div>
@@ -1639,8 +1719,8 @@
             <h3 class="developer-name">Fahmi Al Ashri</h3>
             <p class="developer-role">Frontend Developer & Backend Developer</p>
             <p class="developer-description">
-              Mengembangkan interface yang user-friendly dan responsif dengan
-              teknologi modern
+              Bertanggung jawab dalam pengembangan frontend dan backend sistem TaniPredict
+              dengan teknologi terdepan untuk pengalaman pengguna yang optimal
             </p>
             <div class="developer-social">
               <a href="https://www.instagram.com/fahmi.alashri/" target="_blank" class="social-link" aria-label="Instagram">
@@ -1666,11 +1746,11 @@
             <h3 class="developer-name">Pandapotan Kristian Sitorus</h3>
             <p class="developer-role">ML Engineer</p>
             <p class="developer-description">
-              Mengembangkan model AI yang akurat menggunakan TensorFlow dan data
-              training berkualitas.
+              Mengembangkan dan melatih model machine learning menggunakan TensorFlow
+              untuk mendiagnosis penyakit tanaman dengan akurasi tinggi
             </p>
             <div class="developer-social">
-              <a href="https://www.instagram.com/p.sitorus_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw== target="_blank" class="social-link" aria-label="Instagram">
+              <a href="https://www.instagram.com/p.sitorus_/" target="_blank" class="social-link" aria-label="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
@@ -1693,10 +1773,11 @@
             <h3 class="developer-name">Naufal Ilham Ramadhan</h3>
             <p class="developer-role">UI/UX Designer</p>
             <p class="developer-description">
-              Merancang dan mengembangkan UI/UX yang menarik dan mudah digunakan.
+              Merancang interface yang modern dan user-friendly untuk memastikan
+              pengalaman pengguna yang optimal di semua perangkat
             </p>
             <div class="developer-social">
-              <a href="https://www.instagram.com/naufalilhamr_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-link" aria-label="Instagram">
+              <a href="https://www.instagram.com/naufalilhamr_/" target="_blank" class="social-link" aria-label="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
