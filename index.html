@@ -10,7 +10,6 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
-    <script defer src="script.js"></script>
     <style>
       :root {
         --primary: #059669;
@@ -38,6 +37,7 @@
         color: var(--text);
         background: #ffffff;
         line-height: 1.6;
+        overflow-x: hidden;
       }
 
       /* Navigation */
@@ -53,6 +53,18 @@
         padding: 0;
         display: flex;
         justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        top: 0;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar.scrolled .nav-container {
+        background: linear-gradient(135deg, var(--primary-700), var(--primary));
       }
 
       .nav-container {
@@ -68,6 +80,7 @@
         border-radius: 9999px;
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
         backdrop-filter: blur(12px);
+        transition: all 0.3s ease;
       }
 
       .logo {
@@ -75,6 +88,11 @@
         font-weight: 800;
         color: #ffffff;
         text-decoration: none;
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.05);
       }
 
       .nav-links {
@@ -89,11 +107,81 @@
         text-decoration: none;
         color: #ffffff;
         font-weight: 500;
-        transition: color 0.2s ease;
+        transition: all 0.2s ease;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-200);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
       }
 
       .nav-links a:hover {
         color: var(--primary-200);
+      }
+      /* Hamburger Menu */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        z-index: 1001;
+      }
+
+      .hamburger span {
+        width: 28px;
+        height: 3px;
+        background: #ffffff;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+
+      .nav-links li {
+        margin: 0;
+      }
+
+      /* Nav Overlay untuk mobile */
+      .nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .nav-overlay.active {
+        display: block;
+        opacity: 1;
       }
 
       /* Hero Section */
@@ -123,6 +211,20 @@
           transparent 70%
         );
         opacity: 0.8;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        33% {
+          transform: translate(30px, -30px) rotate(5deg);
+        }
+        66% {
+          transform: translate(-20px, 20px) rotate(-5deg);
+        }
       }
 
       .hero-content {
@@ -130,6 +232,18 @@
         margin: 0 auto;
         position: relative;
         z-index: 2;
+        animation: fadeInUp 1s ease;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .hero h1 {
@@ -158,8 +272,8 @@
       }
 
       .btn-primary {
-        background: var(--primary);
-        color: white;
+        background: white;
+        color: var(--primary);
         padding: 1rem 2rem;
         border: none;
         border-radius: 12px;
@@ -172,16 +286,15 @@
       }
 
       .btn-primary:hover {
-        background: var(--primary-700);
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
       }
 
       .btn-secondary {
         background: transparent;
-        color: var(--primary);
+        color: white;
         padding: 1rem 2rem;
-        border: 2px solid var(--primary);
+        border: 2px solid white;
         border-radius: 12px;
         font-weight: 600;
         font-size: 1.1rem;
@@ -192,8 +305,8 @@
       }
 
       .btn-secondary:hover {
-        background: var(--primary);
-        color: white;
+        background: white;
+        color: var(--primary);
         transform: translateY(-2px);
       }
 
@@ -211,6 +324,16 @@
       .section-header {
         text-align: center;
         margin-bottom: 4rem;
+        animation: fadeIn 1s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
 
       .section-title {
@@ -239,18 +362,26 @@
         padding: 2rem;
         border-radius: 16px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: all 0.3s ease;
         border: 1px solid rgba(5, 150, 105, 0.1);
+        cursor: pointer;
       }
 
       .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary);
       }
 
       .feature-icon {
         font-size: 3rem;
         margin-bottom: 1rem;
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
       }
 
       .feature-title {
@@ -271,51 +402,34 @@
         background: white;
       }
 
-      .demo-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-        align-items: start;
-        max-width: 1200px;
+      .demo-container {
+        max-width: 1000px;
         margin: 0 auto;
       }
 
-      @media (max-width: 768px) {
-        .demo-grid {
-          grid-template-columns: 1fr;
-          gap: 2rem;
-        }
+      .demo-box {
+        background: var(--bg1);
+        border: 2px solid var(--primary-200);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
       }
 
-      .demo-content {
-        padding-right: 2rem;
+      .demo-header {
+        text-align: center;
+        margin-bottom: 2rem;
       }
 
-      .demo-content h3 {
-        font-size: 2.2rem;
+      .demo-header h3 {
+        font-size: 2rem;
         font-weight: 700;
-        margin: 0 0 1.5rem 0;
+        margin: 0 0 1rem 0;
         color: var(--text);
-        line-height: 1.3;
       }
 
-      .demo-content p {
+      .demo-header p {
         color: var(--muted);
-        margin-bottom: 1.5rem;
         font-size: 1.1rem;
-        line-height: 1.7;
-      }
-
-      .demo-content p:last-of-type {
-        margin-bottom: 0;
-      }
-
-      /* Demo right side */
-      .demo-right {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        align-items: center;
       }
 
       /* Drop zone */
@@ -323,18 +437,17 @@
         border: 2px dashed var(--primary);
         background: var(--bg2);
         border-radius: 16px;
-        padding: 2.5rem;
+        padding: 3rem;
         text-align: center;
-        transition: 0.3s ease;
+        transition: all 0.3s ease;
         cursor: pointer;
         outline: none;
-        min-height: 280px;
-        width: 100%;
-        max-width: 400px;
+        min-height: 250px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        margin-bottom: 2rem;
       }
 
       .drop-zone:hover,
@@ -348,18 +461,30 @@
       .drop-zone .icon {
         font-size: 4rem;
         margin-bottom: 1rem;
+        animation: bounce 2s ease-in-out infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
       }
 
       .drop-zone .headline {
         font-weight: 600;
         margin: 0 0 0.5rem 0;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        color: var(--text);
       }
 
       .drop-zone .hint {
         margin: 0.5rem 0 0 0;
         color: var(--muted);
-        font-size: 0.9rem;
+        font-size: 0.95rem;
       }
 
       input[type="file"] {
@@ -367,25 +492,33 @@
       }
 
       /* Preview */
-      .preview-wrap {
-        background: var(--bg1);
-        border: 1px solid rgba(5, 150, 105, 0.2);
-        border-radius: 16px;
-        padding: 1.5rem;
-        display: flex;
+      .preview-container {
+        display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        min-height: 200px;
-        width: 100%;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .preview-container.active {
+        display: flex;
+      }
+
+      .preview-wrap {
+        background: white;
+        border: 2px solid var(--primary-200);
+        border-radius: 16px;
+        padding: 1rem;
         max-width: 400px;
+        width: 100%;
       }
 
       img#preview {
-        max-width: 100%;
-        max-height: 300px;
+        width: 100%;
+        height: auto;
+        max-height: 350px;
+        object-fit: contain;
         border-radius: 12px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
       }
 
       /* Button */
@@ -398,13 +531,13 @@
         background: var(--primary);
         color: #fff;
         font-weight: 600;
-        padding: 0.75rem 1.5rem;
-        border-radius: 10px;
-        margin: 1.5rem 0 0 0;
+        padding: 0.875rem 2rem;
+        border-radius: 12px;
         cursor: pointer;
         box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
         transition: all 0.3s ease;
         text-decoration: none;
+        font-size: 1rem;
       }
 
       .btn:hover {
@@ -413,59 +546,344 @@
         box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
       }
 
-      .btn:active {
-        transform: translateY(0);
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
       }
 
-      /* Right panel */
-      .panel {
-        background: var(--bg1);
-        border: 1px solid rgba(5, 150, 105, 0.2);
+      /* Results */
+      .result-box {
+        background: white;
+        border: 2px solid var(--primary-200);
         border-radius: 16px;
         padding: 2rem;
-        height: fit-content;
+        display: none;
+        text-align: center;
       }
 
-      .section-title-small {
-        font-weight: 600;
-        margin: 0 0 1rem 0;
-        font-size: 1.1rem;
+      .result-box.active {
+        display: block;
+        animation: slideIn 0.5s ease;
       }
 
-      .result {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin: 1rem 0 0 0;
-        line-height: 1.5;
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
-      .muted {
+      .result-label {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0 0 0.5rem 0;
+      }
+
+      .result-confidence {
+        font-size: 1rem;
         color: var(--muted);
+        margin: 0 0 1rem 0;
+      }
+
+      .result-description {
+        color: var(--text);
+        line-height: 1.6;
+        font-size: 1rem;
+      }
+
+      /* Steps Flow */
+      .steps-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 3rem 0;
+        flex-wrap: wrap;
+      }
+
+      .step-item {
+        background: white;
+        border: 2px solid var(--primary-200);
+        border-radius: 16px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        max-width: 250px;
+        flex: 1;
+        min-width: 200px;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .step-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(5, 150, 105, 0.2);
+        border-color: var(--primary);
+      }
+
+      .step-number {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--primary);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+      }
+
+      .step-icon {
+        font-size: 2.5rem;
+        margin: 1rem 0 0.5rem 0;
+      }
+
+      .step-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text);
+        margin: 0.5rem 0;
+      }
+
+      .step-desc {
         font-size: 0.9rem;
-        margin-top: 1rem;
+        color: var(--muted);
         line-height: 1.5;
+        margin: 0;
+      }
+
+      .step-arrow {
+        font-size: 2rem;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      /* Demo Methods */
+      .demo-methods {
+        margin-top: 3rem;
+      }
+
+      .methods-title {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 2rem;
+      }
+
+      .method-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .method-card {
+        background: white;
+        border: 2px solid var(--primary-200);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .method-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(5, 150, 105, 0.2);
+        border-color: var(--primary);
+      }
+
+      .method-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        animation: bounce 2s ease-in-out infinite;
+      }
+
+      .method-card:hover .method-icon {
+        animation: none;
+        transform: scale(1.1);
+      }
+
+      .method-card h5 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text);
+        margin: 0 0 0.5rem 0;
+      }
+
+      .method-card p {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin: 0 0 1.5rem 0;
+      }
+
+      .method-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+      }
+
+      .method-btn:hover {
+        background: var(--primary-700);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3);
+      }
+
+      /* Demo Interface */
+      .demo-interface {
+        margin-top: 2rem;
+        padding: 2rem;
+        background: white;
+        border: 2px solid var(--primary-200);
+        border-radius: 16px;
+        position: relative;
+        animation: fadeInScale 0.4s ease;
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .close-demo {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--muted);
+        color: white;
+        border: none;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+      }
+
+      .close-demo:hover {
+        background: #ef4444;
+        transform: rotate(90deg);
+      }
+
+      /* Camera Styles */
+      .camera-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .camera-video {
+        width: 100%;
+        max-width: 500px;
+        height: 375px;
+        border-radius: 16px;
+        background: var(--bg2);
+        border: 2px solid var(--primary);
+        object-fit: cover;
+      }
+
+      .camera-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-100);
+        color: var(--primary-700);
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        background: #ef4444;
+        border-radius: 50%;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      .camera-controls {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .camera-btn {
+        min-width: 160px;
+        margin: 0;
+      }
+
+      .btn-secondary {
+        background: var(--muted);
+      }
+
+      .btn-secondary:hover {
+        background: #475569;
+      }
+
+      .camera-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
       }
 
       /* Loader */
       .loader {
-        display: inline-flex;
+        display: none;
         align-items: center;
+        justify-content: center;
         gap: 0.75rem;
-        padding: 0.75rem 1rem;
-        border-radius: 10px;
+        padding: 1rem;
+        border-radius: 12px;
         background: var(--primary-100);
         color: var(--primary-700);
         font-weight: 600;
-        margin-top: 1rem;
+        margin: 1rem 0;
+      }
+
+      .loader.active {
+        display: flex;
       }
 
       .spinner {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         border: 3px solid var(--primary-300);
         border-top-color: var(--primary);
         border-radius: 50%;
-        animation: spin 0.9s linear infinite;
+        animation: spin 0.8s linear infinite;
       }
 
       @keyframes spin {
@@ -476,54 +894,134 @@
 
       /* Stats Section */
       .stats {
-        padding: 4rem 2rem;
-        background: var(--primary);
+        padding: 5rem 2rem;
+        background: linear-gradient(135deg, var(--primary-700), var(--primary));
         color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stats::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate 30s linear infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-        max-width: 800px;
+        gap: 3rem;
+        max-width: 1000px;
         margin: 0 auto;
         text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .stat-item {
+        transition: transform 0.3s ease;
+      }
+
+      .stat-item:hover {
+        transform: scale(1.1);
       }
 
       .stat-item h3 {
-        font-size: 2.5rem;
+        font-size: 3rem;
         font-weight: 800;
         margin: 0 0 0.5rem 0;
+        background: linear-gradient(to right, #fff, var(--primary-200));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .stat-item p {
         margin: 0;
-        opacity: 0.9;
+        opacity: 0.95;
         font-weight: 500;
+        font-size: 1.1rem;
       }
 
-      /* CTA Section */
-      .cta {
+      /* Contact Section */
+      .contact {
         padding: 5rem 2rem;
         background: var(--bg2);
-        text-align: center;
       }
 
-      .cta h2 {
+      .contact-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .contact-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--primary-200);
+        transition: all 0.3s ease;
+      }
+
+      .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        border-color: var(--primary);
+      }
+
+      .contact-icon {
         font-size: 2.5rem;
-        font-weight: 700;
-        margin: 0 0 1rem 0;
+        margin-bottom: 1rem;
+      }
+
+      .contact-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0 0 0.5rem 0;
         color: var(--text);
       }
 
-      .cta p {
-        font-size: 1.1rem;
+      .contact-info {
         color: var(--muted);
-        margin: 0 0 2rem 0;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 2rem;
+        font-size: 0.95rem;
+      }
+
+      .contact-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .contact-link:hover {
+        color: var(--primary-700);
+        text-decoration: underline;
       }
 
       /* Footer */
@@ -549,14 +1047,14 @@
         display: none !important;
       }
 
-      .center {
-        text-align: center;
-      }
-
       /* Responsive */
       @media (max-width: 768px) {
         .hero h1 {
           font-size: 2.5rem;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
         }
 
         .hero-buttons {
@@ -564,166 +1062,147 @@
           align-items: center;
         }
 
-        .nav-links {
-          display: none;
+        .btn-primary,
+        .btn-secondary {
+          width: 100%;
+          max-width: 300px;
         }
 
         .section-title {
           font-size: 2rem;
         }
-      }
 
-      /* Results Panel */
-      .results-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem 3rem 2rem;
-      }
-
-      .results-panel {
-        background: var(--bg1);
-        border: 1px solid rgba(5, 150, 105, 0.2);
-        border-radius: 16px;
-        padding: 2rem;
-        max-width: 500px;
-        margin: 0 auto;
-        text-align: center;
-      }
-
-      /* Demo Tabs */
-      .demo-tabs {
-        display: flex;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-        background: var(--bg1);
-        padding: 0.5rem;
-        border-radius: 12px;
-        border: 1px solid rgba(5, 150, 105, 0.2);
-      }
-
-      .tab-btn {
-        flex: 1;
-        padding: 0.75rem 1rem;
-        border: none;
-        background: transparent;
-        color: var(--muted);
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 0.9rem;
-      }
-
-      .tab-btn.active {
-        background: var(--primary);
-        color: white;
-        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
-      }
-
-      .tab-btn:hover:not(.active) {
-        background: var(--primary-100);
-        color: var(--primary-700);
-      }
-
-      .tab-content {
-        display: none;
-        width: 100%;
-      }
-
-      .tab-content.active {
-        display: block;
-      }
-
-      /* Camera Styles */
-      .camera-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        width: 100%;
-        max-width: 400px;
-      }
-
-      .camera-video {
-        width: 100%;
-        max-width: 400px;
-        height: 300px;
-        border-radius: 16px;
-        background: var(--bg2);
-        border: 2px solid var(--primary);
-        object-fit: cover;
-      }
-
-      .camera-controls {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-
-      .camera-btn {
-        min-width: 140px;
-        margin: 0;
-      }
-
-      .live-status {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1rem;
-        background: var(--primary-100);
-        color: var(--primary-700);
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.9rem;
-      }
-
-      .live-indicator {
-        width: 8px;
-        height: 8px;
-        background: #ef4444;
-        border-radius: 50%;
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
+        .demo-box {
+          padding: 2rem 1.5rem;
         }
-        50% {
-          opacity: 0.5;
-        }
-      }
 
-      /* Responsive adjustments */
-      @media (max-width: 768px) {
-        .demo-tabs {
+        .stat-item h3 {
+          font-size: 2.5rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .steps-container {
           flex-direction: column;
         }
 
-        .camera-controls {
-          flex-direction: column;
-          align-items: center;
+        .step-arrow {
+          transform: rotate(90deg);
         }
 
-        .camera-btn {
+        .method-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .camera-video {
+          height: 280px;
+        }
+
+        .camera-controls,
+        .camera-actions {
+          flex-direction: column;
           width: 100%;
-          max-width: 200px;
+        }
+
+        .camera-btn,
+        .btn {
+          width: 100%;
+          max-width: 300px;
+        }
+
+        /* Hamburger Menu Mobile */
+        .hamburger {
+          display: flex;
+        }
+
+        .nav-links {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 280px;
+          height: 100vh;
+          background: linear-gradient(
+            135deg,
+            var(--primary-700),
+            var(--primary)
+          );
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          padding: 80px 2rem 2rem 2rem;
+          box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+          transition: right 0.3s ease;
+          gap: 0;
+          z-index: 1000;
+        }
+
+        .nav-links.active {
+          right: 0;
+        }
+
+        .nav-links li {
+          width: 100%;
+          padding: 1rem 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links a {
+          display: block;
+          font-size: 1.1rem;
+          padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+          display: none;
+        }
+
+        .nav-links a:hover {
+          color: var(--primary-200);
+          transform: translateX(5px);
+          transition: all 0.3s ease;
+        }
+
+        .nav-container {
+          position: relative;
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .logo {
+          font-size: 1.3rem;
+        }
+      }
+
+      /* Tablet Styles */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .nav-links {
+          gap: 1.5rem;
+        }
+
+        .nav-links a {
+          font-size: 0.95rem;
         }
       }
     </style>
   </head>
   <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
       <div class="nav-container">
-        <a href="#" class="logo">TaniPredict</a>
-        <ul class="nav-links">
+        <a href="#" class="logo"> TaniPredict</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
           <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#Why-me">Why TaniPredict?</a></li>
           <li><a href="#fitur">Fitur</a></li>
-          <li><a href="#demo">Demo</a></li>
           <li><a href="#kontak">Kontak</a></li>
+          <li><a href="login.html">Login</a></li>
         </ul>
       </div>
     </nav>
@@ -738,14 +1217,16 @@
           tanaman secara akurat dalam hitungan detik.
         </p>
         <div class="hero-buttons">
-          <a href="#demo" class="btn-primary">Coba Sekarang</a>
-          <a href="#fitur" class="btn-secondary">Pelajari Lebih Lanjut</a>
+          <a href="login.html" class="btn-primary">Masuk ke Dashboard</a>
+          <a href="login.html" class="btn-secondary" id="demoBtn"
+            >Coba Demo Gratis</a
+          >
         </div>
       </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features" id="fitur">
+    <section class="features" id="Why-me">
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">Mengapa Memilih TaniPredict?</h2>
@@ -795,194 +1276,647 @@
       </div>
     </section>
 
+    <!-- Demo Section -->
+    <section class="demo" id="fitur">
+      <div class="demo-container">
+        <div class="demo-box">
+          <div class="demo-header">
+            <h3>Cara Kerja TaniPredict</h3>
+            <p>Ikuti langkah mudah untuk mendiagnosis tanaman Anda</p>
+          </div>
+
+          <!-- Steps Flow -->
+          <div class="steps-container">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-icon">📸</div>
+              <h4 class="step-title">Upload atau Ambil Foto</h4>
+              <p class="step-desc">
+                Upload foto dari galeri atau gunakan kamera real-time untuk
+                mengambil foto tanaman
+              </p>
+            </div>
+
+            <div class="step-arrow">→</div>
+
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-icon">🤖</div>
+              <h4 class="step-title">AI Menganalisis</h4>
+              <p class="step-desc">
+                Model AI kami memproses gambar dan mengidentifikasi kondisi
+                tanaman dalam hitungan detik
+              </p>
+            </div>
+
+            <div class="step-arrow">→</div>
+
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-icon">📊</div>
+              <h4 class="step-title">Dapatkan Hasil</h4>
+              <p class="step-desc">
+                Terima diagnosis lengkap dengan tingkat akurasi dan rekomendasi
+                penanganan
+              </p>
+            </div>
+          </div>
+
+          <!-- Demo Methods -->
+          <div class="demo-methods">
+            <h4 class="methods-title">Pilih Metode Diagnosis:</h4>
+
+            <div class="method-cards">
+              <div class="method-card" id="uploadCard">
+                <div class="method-icon">🖼️</div>
+                <h5>Upload Foto</h5>
+                <p>Upload dari galeri atau drag & drop foto tanaman</p>
+                <button
+                  class="method-btn"
+                  onclick="window.location.href='login.html'"
+                >
+                  Coba Sekarang
+                </button>
+              </div>
+
+              <div class="method-card" id="cameraCard">
+                <div class="method-icon">📷</div>
+                <h5>Kamera Real-Time</h5>
+                <p>Ambil foto langsung menggunakan kamera perangkat Anda</p>
+                <button
+                  class="method-btn"
+                  onclick="window.location.href='login.html'"
+                >
+                  Aktifkan Kamera
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload Demo (Hidden by default) -->
+          <div class="demo-interface hidden" id="uploadInterface">
+            <button class="close-demo" onclick="closeDemo()">
+              ✕ Tutup Demo
+            </button>
+
+            <div class="drop-zone" id="dropZone">
+              <div class="icon">📸</div>
+              <p class="headline">Klik atau drag foto tanaman ke sini</p>
+              <p class="hint">Format: JPG, PNG (Maks. 5MB)</p>
+            </div>
+
+            <input type="file" id="fileInput" accept="image/*" />
+
+            <div class="preview-container" id="previewContainer">
+              <div class="preview-wrap">
+                <img id="preview" alt="Preview" />
+              </div>
+              <button class="btn" id="analyzeBtn">🔍 Analisis Tanaman</button>
+            </div>
+
+            <div class="loader" id="loader">
+              <div class="spinner"></div>
+              <span>Menganalisis gambar...</span>
+            </div>
+
+            <div class="result-box" id="resultBox">
+              <h4 class="result-label" id="resultLabel"></h4>
+              <p class="result-confidence" id="resultConfidence"></p>
+              <p class="result-description" id="resultDescription"></p>
+            </div>
+          </div>
+
+          <!-- Camera Demo (Hidden by default) -->
+          <div class="demo-interface hidden" id="cameraInterface">
+            <button class="close-demo" onclick="closeDemo()">
+              ✕ Tutup Demo
+            </button>
+
+            <div class="camera-container">
+              <video
+                id="cameraVideo"
+                class="camera-video"
+                autoplay
+                playsinline
+              ></video>
+              <canvas id="cameraCanvas" class="hidden"></canvas>
+
+              <div class="camera-status" id="cameraStatus">
+                <span class="status-dot"></span>
+                <span>Kamera Aktif</span>
+              </div>
+
+              <div class="camera-controls">
+                <button class="btn camera-btn" id="captureBtn">
+                  📸 Ambil Foto
+                </button>
+                <button class="btn btn-secondary camera-btn" id="stopCameraBtn">
+                  ⏹️ Hentikan Kamera
+                </button>
+              </div>
+            </div>
+
+            <div class="preview-container" id="cameraPreviewContainer">
+              <div class="preview-wrap">
+                <img id="cameraPreview" alt="Preview" />
+              </div>
+              <div class="camera-actions">
+                <button class="btn" id="analyzeCameraBtn">
+                  🔍 Analisis Tanaman
+                </button>
+                <button class="btn btn-secondary" onclick="retakePhoto()">
+                  🔄 Ambil Ulang
+                </button>
+              </div>
+            </div>
+
+            <div class="loader" id="cameraLoader">
+              <div class="spinner"></div>
+              <span>Menganalisis gambar...</span>
+            </div>
+
+            <div class="result-box" id="cameraResultBox">
+              <h4 class="result-label" id="cameraResultLabel"></h4>
+              <p class="result-confidence" id="cameraResultConfidence"></p>
+              <p class="result-description" id="cameraResultDescription"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Stats Section -->
     <section class="stats">
       <div class="container">
         <div class="stats-grid">
           <div class="stat-item">
-            <h3>99%</h3>
+            <h3>95%+</h3>
             <p>Akurasi Prediksi</p>
           </div>
           <div class="stat-item">
             <h3>10K+</h3>
-            <p>Gambar Diproses</p>
+            <p>Gambar Dianalisis</p>
           </div>
           <div class="stat-item">
             <h3>4</h3>
             <p>Kategori Diagnosis</p>
           </div>
           <div class="stat-item">
-            <h3>< 1s</h3>
+            <h3>&lt; 2s</h3>
             <p>Waktu Proses</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Demo Section -->
-    <section class="demo" id="demo">
-      <div class="container">
+    <!-- Contact Section -->
+    <section class="contact" id="kontak">
+      <div class="contact-container">
         <div class="section-header">
-          <h2 class="section-title">Coba Sekarang</h2>
+          <h2 class="section-title">Hubungi Kami</h2>
           <p class="section-subtitle">
-            Unggah foto tanaman Anda dan lihat bagaimana AI kami menganalisis
-            kondisi tanaman
+            Ada pertanyaan? Tim kami siap membantu Anda
           </p>
         </div>
 
-        <div class="demo-grid">
-          <div class="demo-content">
-            <h3>Diagnosis Tanaman dalam 3 Langkah Sederhana</h3>
-            <p>
-              1. <strong>Unggah Foto</strong> - Ambil foto tanaman yang ingin
-              didiagnosis<br />
-              2. <strong>AI Menganalisis</strong> - Model AI kami memproses
-              gambar secara otomatis<br />
-              3. <strong>Dapatkan Hasil</strong> - Lihat diagnosis lengkap
-              dengan tingkat kepercayaan
-            </p>
-            <p>
-              Mendukung berbagai jenis tanaman dan dapat mendeteksi penyakit
-              umum seperti Cercospora, Powdery Mildew, kekurangan nutrisi, dan
-              kondisi sehat.
+        <div class="contact-grid">
+          <div class="contact-card">
+            <div class="contact-icon">✉️</div>
+            <h3 class="contact-title">Email</h3>
+            <p class="contact-info">
+              <a href="mailto:admin_tanipredict@gmail.com" class="contact-link">
+                admin_tanipredict@gmail.com
+              </a>
             </p>
           </div>
 
-          <div class="demo-right">
-            <!-- Tab Navigation -->
-            <div class="demo-tabs">
-              <button class="tab-btn active" data-tab="upload">
-                📁 Upload Gambar
-              </button>
-              <button class="tab-btn" data-tab="camera">
-                📸 Kamera Real-time
-              </button>
-            </div>
-
-            <!-- Upload Tab -->
-            <div class="tab-content active" id="upload-tab">
-              <div
-                id="dropZone"
-                class="drop-zone"
-                tabindex="0"
-                aria-label="Area unggah gambar"
+          <div class="contact-card">
+            <div class="contact-icon">📱</div>
+            <h3 class="contact-title">WhatsApp</h3>
+            <p class="contact-info">
+              <a
+                href="https://chat.whatsapp.com/Egt0wV92im8IbzcqS69wPy?mode=wwt"
+                class="contact-link"
+                target="_blank"
               >
-                <div class="icon">📷</div>
-                <p class="headline">Pilih gambar tanaman</p>
-                <label for="fileInput" class="btn">Pilih Gambar</label>
-                <p class="hint">atau seret & lepas gambar ke sini</p>
-                <input type="file" id="fileInput" accept="image/*" />
-              </div>
+                Chat Admin
+              </a>
+            </p>
+          </div>
 
-              <div class="preview-wrap">
-                <img id="preview" alt="Preview gambar" class="hidden" />
-                <button id="predictBtn" class="btn predict-btn hidden">
-                  <span class="btn-text">🔍 Prediksi Sekarang</span>
-                  <span class="btn-loading hidden">
-                    <span class="spinner"></span>
-                    <span>Memproses...</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Camera Tab -->
-            <div class="tab-content" id="camera-tab">
-              <div class="camera-container">
-                <video
-                  id="camera"
-                  class="camera-video hidden"
-                  autoplay
-                  muted
-                  playsinline
-                ></video>
-                <canvas id="offscreen" class="hidden"></canvas>
-
-                <div class="camera-controls">
-                  <button id="startCamBtn" class="btn camera-btn">
-                    📹 Mulai Kamera
-                  </button>
-                  <button id="stopCamBtn" class="btn camera-btn hidden">
-                    ⏹️ Hentikan Kamera
-                  </button>
-                </div>
-
-                <div id="liveStatus" class="live-status hidden">
-                  <span class="live-indicator"></span>
-                  <span>Kamera Aktif - Analisis Real-time</span>
-                </div>
-              </div>
-            </div>
+          <div class="contact-card">
+            <div class="contact-icon">📍</div>
+            <h3 class="contact-title">Alamat</h3>
+            <p class="contact-info">
+              Jl. Jeruk 9 No.214<br />
+              Bekasi, Indonesia
+            </p>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Results Panel -->
-    <div class="results-container">
-      <div class="results-panel">
-        <p class="section-title-small">Hasil Prediksi</p>
-        <div id="loader" class="loader hidden">
-          <span class="spinner"></span>
-          <span>Memproses...</span>
-        </div>
-        <p id="result" class="result">Hasil prediksi akan muncul di sini...</p>
-        <p class="muted">
-          Pastikan gambar jelas dan fokus pada objek tanaman untuk hasil
-          terbaik.
-        </p>
-      </div>
-    </div>
-
-    <!-- CTA Section -->
-    <section class="cta">
-      <div class="container">
-        <h2>Siap Memulai Diagnosis Tanaman?</h2>
-        <p>
-          Bergabunglah dengan ribuan petani dan penggemar tanaman yang telah
-          menggunakan TaniPredict untuk menjaga kesehatan tanaman mereka.
-        </p>
-        <a href="#demo" class="btn-primary">Mulai Sekarang</a>
-      </div>
-    </section>
+    <!-- Nav Overlay for Mobile -->
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-content">
         <p>
-          &copy; 2024 TaniPredict. Dibuat dengan ❤️ untuk pertanian Indonesia.
+          &copy; 2025 TaniPredict. Dibuat dengan ❤️ untuk pertanian Indonesia.
         </p>
       </div>
     </footer>
 
     <script>
-      // Tab switching functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const tabBtns = document.querySelectorAll(".tab-btn");
-        const tabContents = document.querySelectorAll(".tab-content");
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+      });
 
-        tabBtns.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const targetTab = btn.dataset.tab;
+      // Navbar scroll effect
+      window.addEventListener("scroll", () => {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 100) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+      // Hamburger Menu Toggle
+      const hamburger = document.getElementById("hamburger");
+      const navLinks = document.getElementById("navLinks");
+      const navOverlay = document.getElementById("navOverlay");
 
-            // Update active tab button
-            tabBtns.forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
+      if (hamburger) {
+        hamburger.addEventListener("click", function () {
+          hamburger.classList.toggle("active");
+          navLinks.classList.toggle("active");
+          navOverlay.classList.toggle("active");
+          document.body.style.overflow = navLinks.classList.contains("active")
+            ? "hidden"
+            : "auto";
+        });
+      }
 
-            // Update active tab content
-            tabContents.forEach((content) => {
-              content.classList.remove("active");
-              if (content.id === `${targetTab}-tab`) {
-                content.classList.add("active");
+      // Close menu when clicking overlay
+      if (navOverlay) {
+        navOverlay.addEventListener("click", function () {
+          hamburger.classList.remove("active");
+          navLinks.classList.remove("active");
+          navOverlay.classList.remove("active");
+          document.body.style.overflow = "auto";
+        });
+      }
+
+      // Close menu when clicking nav links (mobile)
+      const mobileNavLinks = document.querySelectorAll(".nav-links a");
+      mobileNavLinks.forEach((link) => {
+        link.addEventListener("click", function () {
+          if (window.innerWidth <= 768) {
+            hamburger.classList.remove("active");
+            navLinks.classList.remove("active");
+            navOverlay.classList.remove("active");
+            document.body.style.overflow = "auto";
+          }
+        });
+      });
+
+      // File upload demo
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const preview = document.getElementById("preview");
+      const previewContainer = document.getElementById("previewContainer");
+      const analyzeBtn = document.getElementById("analyzeBtn");
+      const loader = document.getElementById("loader");
+      const resultBox = document.getElementById("resultBox");
+
+      // Sample predictions data
+      const predictions = {
+        healthy: {
+          label: "✅ Tanaman Sehat",
+          description:
+            "Tanaman Anda dalam kondisi sehat! Tidak ditemukan tanda-tanda penyakit atau kekurangan nutrisi. Lanjutkan perawatan yang baik.",
+        },
+        disease: {
+          label: "⚠️ Terdeteksi Penyakit",
+          description:
+            "Tanaman menunjukkan gejala penyakit. Segera lakukan isolasi dan aplikasikan fungisida sesuai rekomendasi. Konsultasikan dengan ahli pertanian untuk penanganan lebih lanjut.",
+        },
+        deficiency: {
+          label: "🔶 Kekurangan Nutrisi",
+          description:
+            "Tanaman mengalami defisiensi nutrisi. Berikan pupuk NPK berimbang dan tambahkan mikronutrien. Periksa pH tanah untuk memastikan penyerapan optimal.",
+        },
+        pest: {
+          label: "🐛 Serangan Hama",
+          description:
+            "Terdeteksi kerusakan akibat hama. Lakukan pengendalian dengan pestisida organik atau kimiawi sesuai tingkat serangan. Monitor secara berkala.",
+        },
+      };
+
+      // Click to upload
+      dropZone.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      // Drag and drop handlers
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          handleFile(files[0]);
+        }
+      });
+
+      // File input change
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files.length > 0) {
+          handleFile(e.target.files[0]);
+        }
+      });
+
+      // Handle file
+      function handleFile(file) {
+        if (!file.type.startsWith("image/")) {
+          alert("Mohon upload file gambar (JPG, PNG)");
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          alert("Ukuran file maksimal 5MB");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          preview.src = e.target.result;
+          previewContainer.classList.add("active");
+          dropZone.style.display = "none";
+          resultBox.classList.remove("active");
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // Analyze button
+      analyzeBtn.addEventListener("click", () => {
+        analyzeImage();
+      });
+
+      // Simulate AI analysis
+      function analyzeImage() {
+        loader.classList.add("active");
+        resultBox.classList.remove("active");
+        analyzeBtn.disabled = true;
+
+        // Simulate processing time
+        setTimeout(() => {
+          loader.classList.remove("active");
+          analyzeBtn.disabled = false;
+
+          // Random prediction for demo
+          const predTypes = ["healthy", "disease", "deficiency", "pest"];
+          const randomType =
+            predTypes[Math.floor(Math.random() * predTypes.length)];
+          const prediction = predictions[randomType];
+          const confidence = (85 + Math.random() * 10).toFixed(1);
+
+          document.getElementById("resultLabel").textContent = prediction.label;
+          document.getElementById(
+            "resultConfidence"
+          ).textContent = `Tingkat kepercayaan: ${confidence}%`;
+          document.getElementById("resultDescription").textContent =
+            prediction.description;
+
+          resultBox.classList.add("active");
+        }, 2000);
+      }
+
+      // Feature cards animation on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -100px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "0";
+            entry.target.style.transform = "translateY(30px)";
+
+            setTimeout(() => {
+              entry.target.style.transition = "all 0.6s ease";
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }, 100);
+          }
+        });
+      }, observerOptions);
+
+      document
+        .querySelectorAll(".feature-card, .stat-item, .contact-card")
+        .forEach((card) => {
+          observer.observe(card);
+        });
+
+      // Counter animation for stats
+      function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            element.textContent = target;
+            clearInterval(timer);
+          } else {
+            element.textContent = Math.floor(current);
+          }
+        }, 30);
+      }
+
+      const statsObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !entry.target.dataset.animated) {
+              entry.target.dataset.animated = "true";
+              const text = entry.target.textContent;
+              const number = parseInt(text.replace(/[^0-9]/g, ""));
+              if (!isNaN(number)) {
+                animateCounter(entry.target, number);
               }
-            });
-
-            // Stop camera if switching away from camera tab
-            if (targetTab !== "camera" && window.isLive) {
-              window.stopCamera();
             }
           });
+        },
+        { threshold: 0.5 }
+      );
+
+      document.querySelectorAll(".stat-item h3").forEach((stat) => {
+        statsObserver.observe(stat);
+      });
+
+      // Demo Functions
+      function showUploadDemo() {
+        document.getElementById("uploadInterface").classList.remove("hidden");
+        document.getElementById("cameraInterface").classList.add("hidden");
+        document.querySelector(".demo-methods").style.display = "none";
+        document.querySelector(".steps-container").style.display = "none";
+      }
+
+      function showCameraDemo() {
+        document.getElementById("cameraInterface").classList.remove("hidden");
+        document.getElementById("uploadInterface").classList.add("hidden");
+        document.querySelector(".demo-methods").style.display = "none";
+        document.querySelector(".steps-container").style.display = "none";
+        startCamera();
+      }
+
+      function closeDemo() {
+        document.getElementById("uploadInterface").classList.add("hidden");
+        document.getElementById("cameraInterface").classList.add("hidden");
+        document.querySelector(".demo-methods").style.display = "block";
+        document.querySelector(".steps-container").style.display = "flex";
+        stopCamera();
+        resetUploadDemo();
+        resetCameraDemo();
+      }
+
+      function resetUploadDemo() {
+        document.getElementById("dropZone").style.display = "flex";
+        document.getElementById("previewContainer").classList.remove("active");
+        document.getElementById("resultBox").classList.remove("active");
+        document.getElementById("fileInput").value = "";
+      }
+
+      function resetCameraDemo() {
+        document.getElementById("cameraVideo").style.display = "block";
+        document.getElementById("cameraStatus").style.display = "flex";
+        document
+          .getElementById("cameraPreviewContainer")
+          .classList.remove("active");
+        document.getElementById("cameraResultBox").classList.remove("active");
+      }
+
+      // Camera Functions
+      let stream = null;
+
+      async function startCamera() {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" },
+          });
+          const video = document.getElementById("cameraVideo");
+          video.srcObject = stream;
+        } catch (error) {
+          alert(
+            "Tidak dapat mengakses kamera. Pastikan Anda memberikan izin akses kamera."
+          );
+          console.error("Camera error:", error);
+        }
+      }
+
+      function stopCamera() {
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+          stream = null;
+        }
+      }
+
+      document.getElementById("captureBtn")?.addEventListener("click", () => {
+        const video = document.getElementById("cameraVideo");
+        const canvas = document.getElementById("cameraCanvas");
+        const preview = document.getElementById("cameraPreview");
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0);
+
+        const imageData = canvas.toDataURL("image/jpeg");
+        preview.src = imageData;
+
+        document.getElementById("cameraVideo").style.display = "none";
+        document.getElementById("cameraStatus").style.display = "none";
+        document.getElementById("captureBtn").style.display = "none";
+        document.getElementById("stopCameraBtn").style.display = "none";
+        document
+          .getElementById("cameraPreviewContainer")
+          .classList.add("active");
+      });
+
+      document
+        .getElementById("stopCameraBtn")
+        ?.addEventListener("click", () => {
+          stopCamera();
+          closeDemo();
         });
+
+      function retakePhoto() {
+        document.getElementById("cameraVideo").style.display = "block";
+        document.getElementById("cameraStatus").style.display = "flex";
+        document.getElementById("captureBtn").style.display = "inline-flex";
+        document.getElementById("stopCameraBtn").style.display = "inline-flex";
+        document
+          .getElementById("cameraPreviewContainer")
+          .classList.remove("active");
+        document.getElementById("cameraResultBox").classList.remove("active");
+      }
+
+      document
+        .getElementById("analyzeCameraBtn")
+        ?.addEventListener("click", () => {
+          const loader = document.getElementById("cameraLoader");
+          const resultBox = document.getElementById("cameraResultBox");
+
+          loader.classList.add("active");
+          resultBox.classList.remove("active");
+
+          setTimeout(() => {
+            loader.classList.remove("active");
+
+            const predTypes = ["healthy", "disease", "deficiency", "pest"];
+            const randomType =
+              predTypes[Math.floor(Math.random() * predTypes.length)];
+            const prediction = predictions[randomType];
+            const confidence = (85 + Math.random() * 10).toFixed(1);
+
+            document.getElementById("cameraResultLabel").textContent =
+              prediction.label;
+            document.getElementById(
+              "cameraResultConfidence"
+            ).textContent = `Tingkat kepercayaan: ${confidence}%`;
+            document.getElementById("cameraResultDescription").textContent =
+              prediction.description;
+
+            resultBox.classList.add("active");
+          }, 2000);
+        });
+      // Handle demo button click - redirect to login if not authenticated
+      document.addEventListener("DOMContentLoaded", function () {
+        const demoBtn = document.getElementById("demoBtn");
+        if (demoBtn) {
+          demoBtn.addEventListener("click", function (e) {
+            const isAuth = sessionStorage.getItem("isAuthenticated") === "true";
+            if (!isAuth) {
+              e.preventDefault();
+              window.location.href = "login.html";
+            }
+          });
+        }
       });
     </script>
   </body>

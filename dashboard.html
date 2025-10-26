@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - TaniPredict</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
+    <script defer src="auth.js"></script>
+    <script defer src="script.js"></script>
+    <style>
+      :root {
+        --primary: #059669;
+        --primary-100: #d1fae5;
+        --primary-200: #a7f3d0;
+        --primary-300: #6ee7b7;
+        --primary-600: #059669;
+        --primary-700: #047857;
+        --muted: #64748b;
+        --text: #0f172a;
+        --card: #ffffff;
+        --bg1: #f8fafc;
+        --bg2: #ecfdf5;
+        --ring: rgba(5, 150, 105, 0.35);
+        --accent: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", Arial, sans-serif;
+        color: var(--text);
+        background: #ffffff;
+        line-height: 1.6;
+      }
+
+      /* Navigation */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, var(--primary-700), var(--primary));
+        z-index: 1000;
+        padding: 1rem 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #ffffff;
+        text-decoration: none;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .user-info {
+        color: white;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-logout {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-logout:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      /* Dashboard Header */
+      .dashboard-header {
+        background: linear-gradient(135deg, #10b981 0%, #3bcb9d 100%);
+        padding: 8rem 2rem 4rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dashboard-header h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin: 0 0 1rem 0;
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-header p {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+      }
+
+      /* Welcome Section */
+      .welcome-section {
+        padding: 3rem 2rem;
+        background: var(--bg1);
+      }
+
+      .welcome-card {
+        background: linear-gradient(135deg, var(--primary-700), var(--primary));
+        border-radius: 16px;
+        padding: 2rem 3rem;
+        color: white;
+        box-shadow: 0 10px 30px rgba(5, 150, 105, 0.2);
+        text-align: center;
+      }
+
+      .welcome-card h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+      }
+
+      .welcome-card p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin: 0;
+      }
+
+      /* History Section */
+      .history-section {
+        padding: 3rem 2rem;
+        background: white;
+      }
+
+      .history-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .history-item {
+        background: white;
+        border: 2px solid var(--primary-100);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .history-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.15);
+        border-color: var(--primary);
+      }
+
+      .history-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+      }
+
+      .history-item-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+        color: var(--text);
+      }
+
+      .history-item-date {
+        font-size: 0.85rem;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .history-item-result {
+        background: var(--bg2);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+
+      .history-item-label {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary-700);
+        margin: 0 0 0.5rem 0;
+      }
+
+      .history-item-confidence {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .history-item-description {
+        font-size: 0.95rem;
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .no-history {
+        grid-column: 1 / -1;
+        text-align: center;
+        color: var(--muted);
+        font-style: italic;
+        padding: 3rem;
+        background: var(--bg1);
+        border-radius: 12px;
+        border: 2px dashed var(--primary-200);
+      }
+
+      .btn-clear-all {
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+      }
+
+      .btn-clear-all:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-delete-item {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-delete-item:hover {
+        background: #ef4444;
+        color: white;
+      }
+
+      /* Plant Selection */
+      .plant-selection-container {
+        max-width: 600px;
+        margin: 0 auto 3rem auto;
+        text-align: center;
+      }
+
+      .plant-options {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      .plant-option {
+        flex: 1;
+        max-width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1.5rem 1rem;
+        background: white;
+        border: 2px solid var(--primary-100);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .plant-option:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.15);
+      }
+
+      .plant-option.active {
+        background: linear-gradient(135deg, var(--primary-700), var(--primary));
+        border-color: var(--primary);
+        color: white;
+        box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+      }
+
+      .plant-icon {
+        font-size: 3rem;
+        display: block;
+      }
+
+      .plant-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .plant-selection-hint {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .plant-options {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .plant-option {
+          max-width: 100%;
+        }
+      }
+
+      /* Demo Section */
+      .demo {
+        padding: 5rem 2rem;
+        background: white;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+        color: var(--text);
+      }
+
+      .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: start;
+      }
+
+      @media (max-width: 768px) {
+        .demo-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+
+      .demo-content {
+        padding-right: 2rem;
+      }
+
+      .demo-content h3 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0 0 1.5rem 0;
+        color: var(--text);
+        line-height: 1.3;
+      }
+
+      .demo-content p {
+        color: var(--muted);
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.7;
+      }
+
+      /* Demo right side */
+      .demo-right {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      /* Drop zone */
+      .drop-zone {
+        border: 2px dashed var(--primary);
+        background: var(--bg2);
+        border-radius: 16px;
+        padding: 2.5rem;
+        text-align: center;
+        transition: 0.3s ease;
+        cursor: pointer;
+        outline: none;
+        min-height: 280px;
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .drop-zone:hover,
+      .drop-zone.dragover {
+        background: var(--primary-100);
+        border-color: var(--primary-600);
+        box-shadow: 0 0 0 8px var(--ring);
+        transform: scale(1.02);
+      }
+
+      .drop-zone .icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .drop-zone .headline {
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.1rem;
+      }
+
+      .drop-zone .hint {
+        margin: 0.5rem 0 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      /* Preview */
+      .preview-wrap {
+        background: var(--bg1);
+        border: 1px solid rgba(5, 150, 105, 0.2);
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 200px;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      img#preview {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Button */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border: 0;
+        background: var(--primary);
+        color: #fff;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        margin: 1.5rem 0 0 0;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        background: var(--primary-700);
+        box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+      }
+
+      /* Results Panel */
+      .results-panel {
+        background: var(--bg1);
+        border: 1px solid rgba(5, 150, 105, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      /* Demo Tabs */
+      .demo-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        background: var(--bg1);
+        padding: 0.5rem;
+        border-radius: 12px;
+        border: 1px solid rgba(5, 150, 105, 0.2);
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+      }
+
+      .tab-btn.active {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+      }
+
+      .tab-btn:hover:not(.active) {
+        background: var(--primary-100);
+        color: var(--primary-700);
+      }
+
+      .tab-content {
+        display: none;
+        width: 100%;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Camera Styles */
+      .camera-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .camera-video {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+        border-radius: 16px;
+        background: var(--bg2);
+        border: 2px solid var(--primary);
+        object-fit: cover;
+      }
+
+      .camera-controls {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .camera-btn {
+        min-width: 140px;
+        margin: 0;
+      }
+
+      .live-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        background: var(--primary-100);
+        color: var(--primary-700);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .live-indicator {
+        width: 8px;
+        height: 8px;
+        background: #ef4444;
+        border-radius: 50%;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Loader */
+      .loader {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        background: var(--primary-100);
+        color: var(--primary-700);
+        font-weight: 600;
+        margin-top: 1rem;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid var(--primary-300);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.9s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .section-title-small {
+        font-weight: 600;
+        margin: 0 0 1rem 0;
+        font-size: 1.1rem;
+      }
+
+      .result {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 1rem 0 0 0;
+        line-height: 1.5;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        line-height: 1.5;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-header h1 {
+          font-size: 2rem;
+        }
+
+        .demo-tabs {
+          flex-direction: column;
+        }
+
+        .camera-controls {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .camera-btn {
+          width: 100%;
+          max-width: 200px;
+        }
+
+        .nav-container {
+          flex-direction: column;
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo">TaniPredict</a>
+        <div class="nav-right">
+          <a href="index.html" class="btn-logout">Beranda</a>
+          <div class="user-info">
+            <span>👤</span>
+            <span id="userDisplay">Pengguna</span>
+          </div>
+          <button class="btn-logout" onclick="logout()">Keluar</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+      <h1>Dashboard Diagnosis Tanaman</h1>
+      <p>Gunakan AI untuk mendiagnosis kondisi tanaman Anda</p>
+    </section>
+
+    <!-- Welcome & Stats Section -->
+    <section class="welcome-section">
+      <div class="container">
+        <div class="welcome-card">
+          <h2 id="welcomeMessage">Selamat Datang!</h2>
+          <p id="welcomeSubtext">Mulai diagnosis tanaman Anda sekarang</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="history-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Riwayat Diagnosis</h2>
+          <p class="section-subtitle">
+            Lihat semua hasil diagnosis yang telah Anda lakukan
+          </p>
+          <button
+            id="clearAllHistoryBtn"
+            class="btn-clear-all hidden"
+            onclick="clearAllHistory()"
+          >
+            🗑️ Hapus Semua Riwayat
+          </button>
+        </div>
+        <div id="historyList" class="history-container">
+          <p class="no-history">
+            Belum ada riwayat diagnosis. Mulai lakukan diagnosis pertama Anda!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Diagnosis Tanaman</h2>
+          <p class="section-subtitle">
+            Pilih jenis tanaman dan unggah foto untuk menganalisis kondisi
+          </p>
+        </div>
+
+        <!-- Plant Type Selection -->
+        <div class="plant-selection-container">
+          <div class="plant-options">
+            <button class="plant-option active" data-plant="chili">
+              <span class="plant-icon">🌶️</span>
+              <span class="plant-name">Cabai</span>
+            </button>
+            <button class="plant-option" data-plant="tomato">
+              <span class="plant-icon">🍅</span>
+              <span class="plant-name">Tomat</span>
+            </button>
+          </div>
+          <p class="plant-selection-hint">
+            Pilih jenis tanaman yang ingin didiagnosis
+          </p>
+        </div>
+
+        <div class="demo-grid">
+          <div class="demo-content">
+            <h3>Cara Menggunakan</h3>
+            <p>
+              1. <strong>Pilih Tanaman</strong> - Pilih jenis tanaman
+              (Cabai/Tomat)<br />
+              2. <strong>Pilih Metode</strong> - Upload gambar atau gunakan
+              kamera real-time<br />
+              3. <strong>Ambil/Gambar</strong> - Pastikan fokus pada daun atau
+              bagian tanaman<br />
+              4. <strong>Dapatkan Hasil</strong> - AI akan menganalisis dan
+              memberikan hasil diagnosis
+            </p>
+            <p>
+              Sistem dapat mendeteksi: Cercospora, Powdery Mildew, kekurangan
+              nutrisi, dan kondisi sehat.
+            </p>
+            <p id="selectedPlantInfo">
+              <strong>Tanaman yang dipilih:</strong>
+              <span id="plantName">Cabai</span>
+            </p>
+          </div>
+
+          <div class="demo-right">
+            <!-- Tab Navigation -->
+            <div class="demo-tabs">
+              <button class="tab-btn active" data-tab="upload">
+                📁 Upload Gambar
+              </button>
+              <button class="tab-btn" data-tab="camera">
+                📸 Kamera Real-time
+              </button>
+            </div>
+
+            <!-- Upload Tab -->
+            <div class="tab-content active" id="upload-tab">
+              <div
+                id="dropZone"
+                class="drop-zone"
+                tabindex="0"
+                aria-label="Area unggah gambar"
+              >
+                <div class="icon">📷</div>
+                <p class="headline">Pilih gambar tanaman</p>
+                <label for="fileInput" class="btn">Pilih Gambar</label>
+                <p class="hint">atau seret & lepas gambar ke sini</p>
+                <input type="file" id="fileInput" accept="image/*" />
+              </div>
+
+              <div class="preview-wrap">
+                <img id="preview" alt="Preview gambar" class="hidden" />
+                <button id="predictBtn" class="btn predict-btn hidden">
+                  <span class="btn-text">🔍 Prediksi Sekarang</span>
+                  <span class="btn-loading hidden">
+                    <span class="spinner"></span>
+                    <span>Memproses...</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Camera Tab -->
+            <div class="tab-content" id="camera-tab">
+              <div class="camera-container">
+                <video
+                  id="camera"
+                  class="camera-video hidden"
+                  autoplay
+                  muted
+                  playsinline
+                ></video>
+                <canvas id="offscreen" class="hidden"></canvas>
+
+                <div class="camera-controls">
+                  <button id="startCamBtn" class="btn camera-btn">
+                    📹 Mulai Kamera
+                  </button>
+                  <button id="stopCamBtn" class="btn camera-btn hidden">
+                    ⏹️ Hentikan Kamera
+                  </button>
+                </div>
+
+                <div id="liveStatus" class="live-status hidden">
+                  <span class="live-indicator"></span>
+                  <span>Kamera Aktif - Analisis Real-time</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel">
+          <p class="section-title-small">Hasil Prediksi</p>
+          <div id="loader" class="loader hidden">
+            <span class="spinner"></span>
+            <span>Memproses...</span>
+          </div>
+          <p id="result" class="result">
+            Hasil prediksi akan muncul di sini...
+          </p>
+          <p class="muted">
+            Pastikan gambar jelas dan fokus pada objek tanaman untuk hasil
+            terbaik.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Tab switching functionality and history management
+      document.addEventListener("DOMContentLoaded", function () {
+        // Display user info
+        const username = sessionStorage.getItem("username") || "Pengguna";
+        const fullname = sessionStorage.getItem("fullname");
+        const userDisplay = document.getElementById("userDisplay");
+
+        if (fullname) {
+          userDisplay.textContent = fullname;
+        } else {
+          userDisplay.textContent = username;
+        }
+
+        // Set welcome message
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        const welcomeSubtext = document.getElementById("welcomeSubtext");
+
+        if (fullname) {
+          welcomeMessage.textContent = `Selamat Datang, ${fullname}!`;
+          welcomeSubtext.textContent = "Siap untuk diagnosis tanaman Anda?";
+        } else {
+          welcomeMessage.textContent = `Selamat Datang, ${username}!`;
+          welcomeTitle.textContent = `Dashboard Diagnosis Tanaman`;
+          welcomeSubtext.textContent = "Mulai diagnosis tanaman Anda sekarang";
+        }
+
+        // Load and display history
+        loadHistory();
+
+        // Plant selection handlers
+        const plantOptions = document.querySelectorAll(".plant-option");
+        let selectedPlant = "chili"; // Default to chili
+        const plantNameEl = document.getElementById("plantName");
+
+        plantOptions.forEach((option) => {
+          option.addEventListener("click", () => {
+            // Remove active class from all options
+            plantOptions.forEach((opt) => opt.classList.remove("active"));
+            // Add active class to clicked option
+            option.classList.add("active");
+            selectedPlant = option.dataset.plant;
+
+            // Update plant name display
+            if (plantNameEl) {
+              plantNameEl.textContent =
+                selectedPlant === "chili" ? "Cabai" : "Tomat";
+            }
+
+            // Update global variable
+            window.selectedPlantType = selectedPlant;
+
+            // Load the appropriate model
+            if (typeof window.loadPlantModel === "function") {
+              window.loadPlantModel(selectedPlant);
+            }
+
+            // Update description based on selected plant
+            updatePlantDescription(selectedPlant);
+          });
+        });
+
+        // Store selected plant globally
+        window.selectedPlantType = selectedPlant;
+
+        const tabBtns = document.querySelectorAll(".tab-btn");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const targetTab = btn.dataset.tab;
+
+            // Update active tab button
+            tabBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            // Update active tab content
+            tabContents.forEach((content) => {
+              content.classList.remove("active");
+              if (content.id === `${targetTab}-tab`) {
+                content.classList.add("active");
+              }
+            });
+
+            // Stop camera if switching away from camera tab
+            if (targetTab !== "camera" && window.isLive) {
+              window.stopCamera();
+            }
+          });
+        });
+      });
+
+      // History Management Functions
+      function loadHistory() {
+        const historyList = document.getElementById("historyList");
+        const currentUser = sessionStorage.getItem("username");
+        const history = JSON.parse(
+          localStorage.getItem(`history_${currentUser}`) || "[]"
+        );
+
+        if (history.length === 0) {
+          historyList.innerHTML =
+            '<p class="no-history">Belum ada riwayat diagnosis. Mulai lakukan diagnosis pertama Anda!</p>';
+          return;
+        }
+
+        // Sort by date (newest first)
+        history.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        historyList.innerHTML = "";
+        history.forEach((item, index) => {
+          const historyItem = document.createElement("div");
+          historyItem.className = "history-item";
+          historyItem.innerHTML = `
+            <div class="history-item-header">
+              <h3 class="history-item-title">Diagnosis #${index + 1}</h3>
+              <span class="history-item-date">${formatDate(item.date)}</span>
+            </div>
+            ${
+              item.plantType
+                ? `<div style="color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;">🌿 ${item.plantType}</div>`
+                : ""
+            }
+            <div class="history-item-result">
+              <div class="history-item-label">${item.label}</div>
+              <div class="history-item-confidence">Confidence: ${
+                item.confidence
+              }%</div>
+            </div>
+            <p class="history-item-description">${item.description}</p>
+            <button class="btn-delete-item" onclick="deleteHistoryItem(${index})">
+              🗑️ Hapus
+            </button>
+          `;
+          historyList.appendChild(historyItem);
+        });
+
+        // Show/hide clear all button
+        const clearAllBtn = document.getElementById("clearAllHistoryBtn");
+        if (clearAllBtn) {
+          if (history.length > 0) {
+            clearAllBtn.classList.remove("hidden");
+          } else {
+            clearAllBtn.classList.add("hidden");
+          }
+        }
+      }
+
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        };
+        return date.toLocaleDateString("id-ID", options);
+      }
+
+      // Function to save prediction result to history
+      window.savePredictionToHistory = function (
+        label,
+        confidence,
+        description
+      ) {
+        const currentUser = sessionStorage.getItem("username");
+        if (!currentUser) return;
+
+        const history = JSON.parse(
+          localStorage.getItem(`history_${currentUser}`) || "[]"
+        );
+
+        const selectedPlant = window.selectedPlantType || "chili";
+        const plantName = selectedPlant === "chili" ? "Cabai" : "Tomat";
+
+        const newHistoryItem = {
+          date: new Date().toISOString(),
+          plantType: plantName,
+          label: label,
+          confidence: confidence,
+          description: description,
+        };
+
+        history.unshift(newHistoryItem); // Add to beginning
+
+        // Keep only last 50 items
+        if (history.length > 50) {
+          history.pop();
+        }
+
+        localStorage.setItem(`history_${currentUser}`, JSON.stringify(history));
+        loadHistory();
+      };
+
+      // Expose to global scope
+      window.loadHistory = loadHistory;
+
+      // Update plant description based on selection
+      function updatePlantDescription(plantType) {
+        const descriptionTexts = {
+          chili:
+            "Sistem dapat mendeteksi penyakit pada tanaman cabai seperti Cercospora, Powdery Mildew, kekurangan nutrisi, dan kondisi sehat.",
+          tomato:
+            "Sistem dapat mendeteksi penyakit pada tanaman tomat seperti Cercospora, Powdery Mildew, kekurangan nutrisi, dan kondisi sehat.",
+        };
+
+        const descriptionEl = document.querySelector("#selectedPlantInfo");
+        if (descriptionEl) {
+          const descriptions =
+            descriptionEl.parentElement.querySelectorAll("p");
+          if (descriptions.length >= 3) {
+            descriptions[1].textContent =
+              descriptionTexts[plantType] || descriptionTexts.chili;
+          }
+        }
+      }
+
+      // Delete single history item
+      window.deleteHistoryItem = function (index) {
+        if (!confirm("Apakah Anda yakin ingin menghapus item ini?")) {
+          return;
+        }
+
+        const currentUser = sessionStorage.getItem("username");
+        const history = JSON.parse(
+          localStorage.getItem(`history_${currentUser}`) || "[]"
+        );
+
+        // Remove item at index
+        history.splice(index, 1);
+        localStorage.setItem(`history_${currentUser}`, JSON.stringify(history));
+
+        // Reload history
+        loadHistory();
+      };
+
+      // Clear all history
+      window.clearAllHistory = function () {
+        if (
+          !confirm(
+            "Apakah Anda yakin ingin menghapus SEMUA riwayat diagnosis? Tindakan ini tidak dapat dibatalkan."
+          )
+        ) {
+          return;
+        }
+
+        const currentUser = sessionStorage.getItem("username");
+
+        // Clear history
+        localStorage.removeItem(`history_${currentUser}`);
+
+        // Reload history
+        loadHistory();
+      };
+    </script>
+  </body>
+</html>
