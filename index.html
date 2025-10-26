@@ -1024,6 +1024,243 @@
         text-decoration: underline;
       }
 
+         /* Developer Section - Centered with Auto Slide */
+.developer {
+  padding: 5rem 2rem;
+  background: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.developer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.developer-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeIn 1s ease;
+}
+
+.developer-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 1rem 0;
+}
+
+.developer-header p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Horizontal Scrolling Container - Centered */
+.developer-scroll {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2rem 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.developer-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Developer Card - Uniform Height */
+.developer-card {
+  background: var(--bg1);
+  border: 2px solid var(--primary-200);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  min-width: 350px;
+  max-width: 350px;
+  height: 520px; /* Tinggi tetap untuk semua card */
+  text-align: center;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  opacity: 0.7;
+  transform: scale(0.9);
+  display: flex;
+  flex-direction: column;
+}
+
+.developer-card.active {
+  opacity: 1;
+  transform: scale(1);
+  border-color: var(--primary);
+  box-shadow: 0 15px 50px rgba(5, 150, 105, 0.25);
+}
+
+.developer-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 50px rgba(5, 150, 105, 0.25);
+  border-color: var(--primary);
+}
+
+.developer-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  border: 5px solid var(--primary);
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--primary), var(--primary-700));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+  flex-shrink: 0;
+}
+
+
+
+.developer-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
+  min-height: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.developer-role {
+  font-size: 1.1rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.developer-description {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  max-height: 100px;
+}
+
+.developer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--primary-200);
+  flex-shrink: 0;
+}
+
+.social-link {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--primary-100);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.3rem;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+}
+
+/* Scroll Indicator Dots */
+.scroll-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.scroll-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary-200);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.scroll-dot.active {
+  background: var(--primary);
+  transform: scale(1.2);
+}
+
+/* Tablet Centered */
+@media (max-width: 1024px) {
+  .developer-card {
+    min-width: 300px;
+    max-width: 300px;
+    height: 480px;
+  }
+}
+
+/* Mobile - Centered */
+@media (max-width: 768px) {
+  .developer {
+    padding: 3rem 1.5rem;
+  }
+
+  .developer-header h2 {
+    font-size: 2rem;
+  }
+
+  .developer-card {
+    min-width: 280px;
+    max-width: 280px;
+    padding: 2rem 1.5rem;
+    height: 450px;
+  }
+
+  .developer-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+  }
+
+  .developer-name {
+    font-size: 1.2rem;
+    min-height: 2.4rem;
+  }
+
+  .developer-role {
+    font-size: 1rem;
+    min-height: 1.3rem;
+  }
+
+  .developer-description {
+    font-size: 0.9rem;
+    max-height: 80px;
+  }
+}
       /* Footer */
       .footer {
         background: var(--text);
@@ -1352,98 +1589,14 @@
               </div>
             </div>
           </div>
-
-          <!-- Upload Demo (Hidden by default) -->
-          <div class="demo-interface hidden" id="uploadInterface">
-            <button class="close-demo" onclick="closeDemo()">
-              ✕ Tutup Demo
-            </button>
-
-            <div class="drop-zone" id="dropZone">
-              <div class="icon">📸</div>
-              <p class="headline">Klik atau drag foto tanaman ke sini</p>
-              <p class="hint">Format: JPG, PNG (Maks. 5MB)</p>
-            </div>
-
-            <input type="file" id="fileInput" accept="image/*" />
-
-            <div class="preview-container" id="previewContainer">
-              <div class="preview-wrap">
-                <img id="preview" alt="Preview" />
-              </div>
-              <button class="btn" id="analyzeBtn">🔍 Analisis Tanaman</button>
-            </div>
-
-            <div class="loader" id="loader">
-              <div class="spinner"></div>
-              <span>Menganalisis gambar...</span>
-            </div>
-
-            <div class="result-box" id="resultBox">
-              <h4 class="result-label" id="resultLabel"></h4>
-              <p class="result-confidence" id="resultConfidence"></p>
-              <p class="result-description" id="resultDescription"></p>
-            </div>
-          </div>
-
-          <!-- Camera Demo (Hidden by default) -->
-          <div class="demo-interface hidden" id="cameraInterface">
-            <button class="close-demo" onclick="closeDemo()">
-              ✕ Tutup Demo
-            </button>
-
-            <div class="camera-container">
-              <video
-                id="cameraVideo"
-                class="camera-video"
-                autoplay
-                playsinline
-              ></video>
-              <canvas id="cameraCanvas" class="hidden"></canvas>
-
-              <div class="camera-status" id="cameraStatus">
-                <span class="status-dot"></span>
-                <span>Kamera Aktif</span>
-              </div>
-
-              <div class="camera-controls">
-                <button class="btn camera-btn" id="captureBtn">
-                  📸 Ambil Foto
-                </button>
-                <button class="btn btn-secondary camera-btn" id="stopCameraBtn">
-                  ⏹️ Hentikan Kamera
-                </button>
-              </div>
-            </div>
-
-            <div class="preview-container" id="cameraPreviewContainer">
-              <div class="preview-wrap">
-                <img id="cameraPreview" alt="Preview" />
-              </div>
-              <div class="camera-actions">
-                <button class="btn" id="analyzeCameraBtn">
-                  🔍 Analisis Tanaman
-                </button>
-                <button class="btn btn-secondary" onclick="retakePhoto()">
-                  🔄 Ambil Ulang
-                </button>
-              </div>
-            </div>
-
-            <div class="loader" id="cameraLoader">
-              <div class="spinner"></div>
-              <span>Menganalisis gambar...</span>
-            </div>
-
-            <div class="result-box" id="cameraResultBox">
-              <h4 class="result-label" id="cameraResultLabel"></h4>
-              <p class="result-confidence" id="cameraResultConfidence"></p>
-              <p class="result-description" id="cameraResultDescription"></p>
-            </div>
-          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</div>
+</section>
+
+
 
     <!-- Stats Section -->
     <section class="stats">
@@ -1467,6 +1620,109 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- Developer Section -->
+    <section class="developer" id="developer">
+      <div class="developer-container">
+        <div class="developer-header">
+          <h2>Meet Our Team</h2>
+          <p>
+            Tim ahli yang mengembangkan TaniPredict untuk kemajuan pertanian
+            Indonesia
+          </p>
+        </div>
+
+        <div class="developer-scroll" id="developerScroll">
+          <div class="developer-card">
+            <div class="developer-avatar"><img src="image/ami.jpg" alt="Fahmi Al Ashri" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+            <h3 class="developer-name">Fahmi Al Ashri</h3>
+            <p class="developer-role">Frontend Developer & Backend Developer</p>
+            <p class="developer-description">
+              Mengembangkan interface yang user-friendly dan responsif dengan
+              teknologi modern
+            </p>
+            <div class="developer-social">
+              <a href="https://www.instagram.com/fahmi.alashri/" target="_blank" class="social-link" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+              <a href="https://github.com" target="_blank" class="social-link" aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </a>
+              <a href="https://linkedin.com" target="_blank" class="social-link" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="developer-card">
+            <div class="developer-avatar"><img src="image/Panda.jpg" alt="Pandapotan Kristian Sitorus" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+            <h3 class="developer-name">Pandapotan Kristian Sitorus</h3>
+            <p class="developer-role">ML Engineer</p>
+            <p class="developer-description">
+              Mengembangkan model AI yang akurat menggunakan TensorFlow dan data
+              training berkualitas.
+            </p>
+            <div class="developer-social">
+              <a href="https://www.instagram.com/p.sitorus_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw== target="_blank" class="social-link" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+              <a href="https://github.com" target="_blank" class="social-link" aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </a>
+              <a href="https://linkedin.com" target="_blank" class="social-link" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="developer-card">
+            <div class="developer-avatar"><img src="image/noge.jpg" alt="Naufal Ilham Ramadhan" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"></div>
+            <h3 class="developer-name">Naufal Ilham Ramadhan</h3>
+            <p class="developer-role">UI/UX Designer</p>
+            <p class="developer-description">
+              Merancang dan mengembangkan UI/UX yang menarik dan mudah digunakan.
+            </p>
+            <div class="developer-social">
+              <a href="https://www.instagram.com/naufalilhamr_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-link" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+              <a href="https://github.com" target="_blank" class="social-link" aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </a>
+              <a href="https://linkedin.com" target="_blank" class="social-link" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- Scroll Indicators -->
+    <div class="scroll-indicators">
+      <div class="scroll-dot active"></div>
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+    </div>
+</div>
+
     </section>
 
     <!-- Contact Section -->
@@ -1587,126 +1843,7 @@
         });
       });
 
-      // File upload demo
-      const dropZone = document.getElementById("dropZone");
-      const fileInput = document.getElementById("fileInput");
-      const preview = document.getElementById("preview");
-      const previewContainer = document.getElementById("previewContainer");
-      const analyzeBtn = document.getElementById("analyzeBtn");
-      const loader = document.getElementById("loader");
-      const resultBox = document.getElementById("resultBox");
-
-      // Sample predictions data
-      const predictions = {
-        healthy: {
-          label: "✅ Tanaman Sehat",
-          description:
-            "Tanaman Anda dalam kondisi sehat! Tidak ditemukan tanda-tanda penyakit atau kekurangan nutrisi. Lanjutkan perawatan yang baik.",
-        },
-        disease: {
-          label: "⚠️ Terdeteksi Penyakit",
-          description:
-            "Tanaman menunjukkan gejala penyakit. Segera lakukan isolasi dan aplikasikan fungisida sesuai rekomendasi. Konsultasikan dengan ahli pertanian untuk penanganan lebih lanjut.",
-        },
-        deficiency: {
-          label: "🔶 Kekurangan Nutrisi",
-          description:
-            "Tanaman mengalami defisiensi nutrisi. Berikan pupuk NPK berimbang dan tambahkan mikronutrien. Periksa pH tanah untuk memastikan penyerapan optimal.",
-        },
-        pest: {
-          label: "🐛 Serangan Hama",
-          description:
-            "Terdeteksi kerusakan akibat hama. Lakukan pengendalian dengan pestisida organik atau kimiawi sesuai tingkat serangan. Monitor secara berkala.",
-        },
-      };
-
-      // Click to upload
-      dropZone.addEventListener("click", () => {
-        fileInput.click();
-      });
-
-      // Drag and drop handlers
-      dropZone.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        dropZone.classList.add("dragover");
-      });
-
-      dropZone.addEventListener("dragleave", () => {
-        dropZone.classList.remove("dragover");
-      });
-
-      dropZone.addEventListener("drop", (e) => {
-        e.preventDefault();
-        dropZone.classList.remove("dragover");
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-          handleFile(files[0]);
-        }
-      });
-
-      // File input change
-      fileInput.addEventListener("change", (e) => {
-        if (e.target.files.length > 0) {
-          handleFile(e.target.files[0]);
-        }
-      });
-
-      // Handle file
-      function handleFile(file) {
-        if (!file.type.startsWith("image/")) {
-          alert("Mohon upload file gambar (JPG, PNG)");
-          return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) {
-          alert("Ukuran file maksimal 5MB");
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          preview.src = e.target.result;
-          previewContainer.classList.add("active");
-          dropZone.style.display = "none";
-          resultBox.classList.remove("active");
-        };
-        reader.readAsDataURL(file);
-      }
-
-      // Analyze button
-      analyzeBtn.addEventListener("click", () => {
-        analyzeImage();
-      });
-
-      // Simulate AI analysis
-      function analyzeImage() {
-        loader.classList.add("active");
-        resultBox.classList.remove("active");
-        analyzeBtn.disabled = true;
-
-        // Simulate processing time
-        setTimeout(() => {
-          loader.classList.remove("active");
-          analyzeBtn.disabled = false;
-
-          // Random prediction for demo
-          const predTypes = ["healthy", "disease", "deficiency", "pest"];
-          const randomType =
-            predTypes[Math.floor(Math.random() * predTypes.length)];
-          const prediction = predictions[randomType];
-          const confidence = (85 + Math.random() * 10).toFixed(1);
-
-          document.getElementById("resultLabel").textContent = prediction.label;
-          document.getElementById(
-            "resultConfidence"
-          ).textContent = `Tingkat kepercayaan: ${confidence}%`;
-          document.getElementById("resultDescription").textContent =
-            prediction.description;
-
-          resultBox.classList.add("active");
-        }, 2000);
-      }
-
+      
       // Feature cards animation on scroll
       const observerOptions = {
         threshold: 0.1,
@@ -1729,11 +1866,12 @@
       }, observerOptions);
 
       document
-        .querySelectorAll(".feature-card, .stat-item, .contact-card")
+        .querySelectorAll(
+          ".feature-card, .stat-item, .contact-card, .developer-card"
+        )
         .forEach((card) => {
           observer.observe(card);
         });
-
       // Counter animation for stats
       function animateCounter(element, target) {
         let current = 0;
@@ -1769,142 +1907,122 @@
         statsObserver.observe(stat);
       });
 
-      // Demo Functions
-      function showUploadDemo() {
-        document.getElementById("uploadInterface").classList.remove("hidden");
-        document.getElementById("cameraInterface").classList.add("hidden");
-        document.querySelector(".demo-methods").style.display = "none";
-        document.querySelector(".steps-container").style.display = "none";
-      }
+     // Developer Section - Auto Slide Animation
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollContainer = document.getElementById("developerScroll");
+  const cards = document.querySelectorAll(".developer-card");
+  const dots = document.querySelectorAll(".scroll-dot");
+  let currentIndex = 0;
+  let autoSlideInterval;
 
-      function showCameraDemo() {
-        document.getElementById("cameraInterface").classList.remove("hidden");
-        document.getElementById("uploadInterface").classList.add("hidden");
-        document.querySelector(".demo-methods").style.display = "none";
-        document.querySelector(".steps-container").style.display = "none";
-        startCamera();
-      }
-
-      function closeDemo() {
-        document.getElementById("uploadInterface").classList.add("hidden");
-        document.getElementById("cameraInterface").classList.add("hidden");
-        document.querySelector(".demo-methods").style.display = "block";
-        document.querySelector(".steps-container").style.display = "flex";
-        stopCamera();
-        resetUploadDemo();
-        resetCameraDemo();
-      }
-
-      function resetUploadDemo() {
-        document.getElementById("dropZone").style.display = "flex";
-        document.getElementById("previewContainer").classList.remove("active");
-        document.getElementById("resultBox").classList.remove("active");
-        document.getElementById("fileInput").value = "";
-      }
-
-      function resetCameraDemo() {
-        document.getElementById("cameraVideo").style.display = "block";
-        document.getElementById("cameraStatus").style.display = "flex";
-        document
-          .getElementById("cameraPreviewContainer")
-          .classList.remove("active");
-        document.getElementById("cameraResultBox").classList.remove("active");
-      }
-
-      // Camera Functions
-      let stream = null;
-
-      async function startCamera() {
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment" },
-          });
-          const video = document.getElementById("cameraVideo");
-          video.srcObject = stream;
-        } catch (error) {
-          alert(
-            "Tidak dapat mengakses kamera. Pastikan Anda memberikan izin akses kamera."
-          );
-          console.error("Camera error:", error);
-        }
-      }
-
-      function stopCamera() {
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
-          stream = null;
-        }
-      }
-
-      document.getElementById("captureBtn")?.addEventListener("click", () => {
-        const video = document.getElementById("cameraVideo");
-        const canvas = document.getElementById("cameraCanvas");
-        const preview = document.getElementById("cameraPreview");
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(video, 0, 0);
-
-        const imageData = canvas.toDataURL("image/jpeg");
-        preview.src = imageData;
-
-        document.getElementById("cameraVideo").style.display = "none";
-        document.getElementById("cameraStatus").style.display = "none";
-        document.getElementById("captureBtn").style.display = "none";
-        document.getElementById("stopCameraBtn").style.display = "none";
-        document
-          .getElementById("cameraPreviewContainer")
-          .classList.add("active");
+  // Center card on load
+  function centerCard(index) {
+    if (scrollContainer && cards[index]) {
+      const card = cards[index];
+      const cardWidth = card.offsetWidth;
+      const scrollPosition = card.offsetLeft - (scrollContainer.offsetWidth - cardWidth) / 2;
+      
+      scrollContainer.scrollTo({
+        left: scrollPosition,
+        behavior: "smooth"
       });
 
-      document
-        .getElementById("stopCameraBtn")
-        ?.addEventListener("click", () => {
-          stopCamera();
-          closeDemo();
-        });
+      // Update active state
+      cards.forEach((c, i) => {
+        if (i === index) {
+          c.classList.add("active");
+        } else {
+          c.classList.remove("active");
+        }
+      });
 
-      function retakePhoto() {
-        document.getElementById("cameraVideo").style.display = "block";
-        document.getElementById("cameraStatus").style.display = "flex";
-        document.getElementById("captureBtn").style.display = "inline-flex";
-        document.getElementById("stopCameraBtn").style.display = "inline-flex";
-        document
-          .getElementById("cameraPreviewContainer")
-          .classList.remove("active");
-        document.getElementById("cameraResultBox").classList.remove("active");
+      // Update dots
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
+    }
+  }
+
+  // Auto slide function
+  function autoSlide() {
+    currentIndex = (currentIndex + 1) % cards.length;
+    centerCard(currentIndex);
+  }
+
+  // Start auto slide
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(autoSlide, 3000); // Slide setiap 3 detik
+  }
+
+  // Stop auto slide on hover
+  scrollContainer?.addEventListener("mouseenter", () => {
+    clearInterval(autoSlideInterval);
+  });
+
+  scrollContainer?.addEventListener("mouseleave", () => {
+    startAutoSlide();
+  });
+
+  // Dot click handler
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      currentIndex = index;
+      centerCard(currentIndex);
+      clearInterval(autoSlideInterval);
+      setTimeout(startAutoSlide, 5000);
+    });
+  });
+
+  // Scroll handler untuk update active card
+  scrollContainer?.addEventListener("scroll", () => {
+    let currentCard = 0;
+    let minDistance = Infinity;
+
+    cards.forEach((card, index) => {
+      const cardRect = card.getBoundingClientRect();
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const cardCenter = cardRect.left + cardRect.width / 2;
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      const distance = Math.abs(cardCenter - containerCenter);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        currentCard = index;
       }
+    });
 
-      document
-        .getElementById("analyzeCameraBtn")
-        ?.addEventListener("click", () => {
-          const loader = document.getElementById("cameraLoader");
-          const resultBox = document.getElementById("cameraResultBox");
+    if (currentIndex !== currentCard) {
+      currentIndex = currentCard;
+      cards.forEach((c, i) => {
+        if (i === currentIndex) {
+          c.classList.add("active");
+        } else {
+          c.classList.remove("active");
+        }
+      });
 
-          loader.classList.add("active");
-          resultBox.classList.remove("active");
+      dots.forEach((dot, i) => {
+        if (i === currentIndex) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
+    }
+  });
 
-          setTimeout(() => {
-            loader.classList.remove("active");
+  // Initialize
+  if (cards.length > 0) {
+    centerCard(0);
+    startAutoSlide();
+  }
+});
 
-            const predTypes = ["healthy", "disease", "deficiency", "pest"];
-            const randomType =
-              predTypes[Math.floor(Math.random() * predTypes.length)];
-            const prediction = predictions[randomType];
-            const confidence = (85 + Math.random() * 10).toFixed(1);
-
-            document.getElementById("cameraResultLabel").textContent =
-              prediction.label;
-            document.getElementById(
-              "cameraResultConfidence"
-            ).textContent = `Tingkat kepercayaan: ${confidence}%`;
-            document.getElementById("cameraResultDescription").textContent =
-              prediction.description;
-
-            resultBox.classList.add("active");
-          }, 2000);
-        });
+    
       // Handle demo button click - redirect to login if not authenticated
       document.addEventListener("DOMContentLoaded", function () {
         const demoBtn = document.getElementById("demoBtn");
