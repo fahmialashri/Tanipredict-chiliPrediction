@@ -16,13 +16,40 @@ const classDescriptions = {
 // Treatment recommendations for chili
 const chiliTreatments = {
   Cercospora:
-    "1. Singkirkan daun yang terinfeksi\n2. Gunakan fungisida berbahan aktif mancozeb setiap 7-10 hari\n3. Pastikan drainase yang baik\n4. Hindari penyiraman di atas daun\n5. Gunakan varietas yang tahan penyakit",
+    "1. Buang daun yang ada bintik coklat.\n" +
+    "2. Semprot mancozeb (Antracol/Dithane) 1–2 sendok makan per 10 liter.\n" +
+    "3. Beri NPK sedikit (½ sendok makan). Alasan: NPK bantu tumbuhkan daun baru yang kuat setelah yang sakit dibuang.\n" +
+    "4. Jangan siram daun, cukup tanah.\n" +
+    "5. Perbaiki drainase supaya tidak lembab.\n",
+
   Healthy:
-    "Pertahankan kondisi tanaman dengan:\n1. Penyiraman rutin 2x sehari\n2. Pemupukan berkala setiap 2 minggu\n3. Monitoring hama dan penyakit\n4. Pemangkasan daun tua secara teratur",
+    "Agar tetap sehat:\n" +
+    "1. Siram pagi (06.00–08.00).\n" +
+    "2. Pupuk NPK (Mutiara/Kebomas/Pak Tani) 1 sendok makan tiap 2 minggu.\n" +
+    "   Alasan: N buat daun hijau, P buat akar kuat, K buat bunga & buah tidak rontok.\n" +
+    "3. Tambah kompos 1 genggam per bulan.\n" +
+    "   Alasan: kompos bikin tanah gembur & akar mudah berkembang.\n" +
+    "4. Pangkas daun tua.\n" +
+    "5. Cek hama tiap 2–3 hari.\n",
+
   "Nutrient Deficiency":
-    "1. Berikan pupuk NPK seimbang (16-16-16) setiap 2 minggu\n2. Tambahkan pupuk organik (kompos/kandang)\n3. Gunakan pupuk daun (foliar) untuk penyerapan cepat\n4. Cek pH tanah (ideal 6.0-7.0)\n5. Siram teratur dengan air bersih",
+    "1. Beri NPK 16-16-16 (Mutiara/Kebomas) 1 sendok makan.\n" +
+    "   Alasan: daun kuning = kurang Nitrogen, akar lemah = kurang Fosfor, tepi daun kering = kurang Kalium. NPK ngasih tiga-tiganya sekaligus.\n" +
+    "2. Semprot pupuk daun (Gandasil D/Growmore) seminggu 1x.\n" +
+    "   Alasan: cepat diserap lewat daun, cocok buat tanaman lemah.\n" +
+    "3. Tambah kompos 1–2 genggam.\n" +
+    "   Alasan: memperbaiki tanah dan nambah tenaga alami.\n" +
+    "4. Tabur dolomit 1 sendok makan kalau tanah asam.\n" +
+    "   Alasan: dolomit bikin pupuk NPK lebih mudah diserap.\n" +
+    "5. Siram pagi saja.\n",
+
   "Powdery Mildew":
-    "1. Oleskan fungisida sistemik (azole)\n2. Tingkatkan sirkulasi udara dengan pemangkasan\n3. Kurangi kelembaban dengan drainase yang baik\n4. Semprot campuran baking soda (1 sdm/liter air)\n5. Gunakan varietas yang tahan jamur",
+    "1. Semprot Score/Anvil (azole) 1 tutup/10 liter.\n" +
+    "2. Pangkas daun rimbun.\n" +
+    "3. Beri NPK ½ sendok makan setelah 3 hari.\n" +
+    "   Alasan: setelah kena jamur, tanaman butuh nutrisi buat perbaikan daun.\n" +
+    "4. Perbaiki drainase.\n" +
+    "5. Alternatif alami: baking soda 1 sdm + 1 liter air.\n",
 };
 
 // Class for tomato
@@ -56,23 +83,78 @@ const tomatoClassDescriptions = {
 // Treatment recommendations for tomato
 const tomatoTreatments = {
   bacterial_spot:
-    "1. Singkirkan bagian tanaman yang terinfeksi\n2. Semprot antibakteri tembaga atau streptomisin\n3. Hindari penyiraman di atas daun\n4. Gunakan benih yang bersertifikat\n5. Rotasi tanaman untuk mencegah penularan",
+    "1. Buang daun bercak hitam.\n" +
+    "2. Semprot Nordox/Agrimycin 1–2 sendok makan per 10 liter.\n" +
+    "3. Beri NPK ½ sendok makan setelah 3 hari.\n" +
+    "   Alasan: daun yang dibuang harus diganti daun baru yang sehat, NPK mempercepat tumbuhnya.\n" +
+    "4. Jangan siram daun.\n" +
+    "5. Rotasi tanaman.\n",
+
   early_blight:
-    "1. Semprot fungisida mancozeb atau chlorothalonil\n2. Buang daun yang terinfeksi\n3. Tingkatkan sirkulasi udara\n4. Hindari kelembaban tinggi\n5. Gunakan mulsa untuk mencegah percikan tanah",
+    "1. Semprot Antracol/Dithane 2 sendok makan.\n" +
+    "2. Buang daun bawah.\n" +
+    "3. Beri NPK ½ sendok makan.\n" +
+    "   Alasan: Kalium pada NPK bikin daun lebih tahan penyakit.\n" +
+    "4. Siram pagi saja.\n" +
+    "5. Gunakan mulsa.\n",
+
   healthy:
-    "Pertahankan kondisi tanaman dengan:\n1. Penyiraman rutin dan drainase baik\n2. Pemupukan NPK (20-10-10) setiap 2 minggu\n3. Pengajiran untuk support tanaman\n4. Monitoring hama dan penyakit harian\n5. Pemangkasan tunas air dan daun tua",
+    "Rawat agar tetap sehat:\n" +
+    "1. Siram pagi.\n" +
+    "2. Pupuk NPK (Mutiara/Ria/Kebomas) 1 sendok makan tiap 2 minggu.\n" +
+    "   Alasan: N hijaukan daun, P kuatkan akar, K bikin buah tidak rontok.\n" +
+    "3. Tambah kompos 1 genggam.\n" +
+    "   Alasan: kompos bikin tanah gembur & subur.\n" +
+    "4. Pasang ajir.\n" +
+    "5. Pangkas tunas air.\n",
+
   late_blight:
-    "1. Segera semprot fungisida mancozeb + metalaxyl\n2. Buang semua bagian tanaman yang terinfeksi\n3. Lindungi dari hujan dan embun\n4. Aplikasi fungisida preventif setiap minggu\n5. Gunakan varietas yang tahan late blight",
+    "1. Semprot Ridomil/Matador (mancozeb + metalaxyl).\n" +
+    "2. Buang daun coklat basah.\n" +
+    "3. Beri NPK ½ sendok makan setelah 3 hari.\n" +
+    "   Alasan: tanaman butuh nutrisi buat pulih dari kerusakan parah.\n" +
+    "4. Gunakan paranet saat lembab.\n" +
+    "5. Semprot preventif mingguan.\n",
+
   leaf_mold:
-    "1. Semprot fungisida azole (tebuconazole)\n2. Kurangi kelembaban dengan ventilasi baik\n3. Hindari penyiraman di atas daun\n4. Cabut dan buang tanaman terinfeksi berat\n5. Gunakan sistem irigasi tetes",
+    "1. Semprot Score 1 tutup.\n" +
+    "2. Pangkas daun bawah.\n" +
+    "3. Beri NPK ½ sendok makan.\n" +
+    "   Alasan: Kalium bantu perkuat daun biar jamur tidak mudah nempel.\n" +
+    "4. Jangan siram daun.\n" +
+    "5. Bila parah, cabut.\n",
+
   septoria_leaf_spot:
-    "1. Semprot fungisida chlorothalonil\n2. Buang daun bawah yang terinfeksi\n3. Rotasi tanaman dengan tanaman lain\n4. Bersihkan sisa tanaman setelah panen\n5. Gunakan varietas yang tahan",
+    "1. Semprot Daconil 2 sendok makan.\n" +
+    "2. Buang daun bawah.\n" +
+    "3. Tabur NPK ½–1 sendok makan.\n" +
+    "   Alasan: Nitrogen di NPK mempercepat daun baru tumbuh sehat.\n" +
+    "4. Rotasi tanaman.\n" +
+    "5. Bersihkan sisa tanaman.\n",
+
   spotted_spider_mite:
-    "1. Semprot akarisida abamectin atau spiromesifen\n2. Gunakan predator alami (Phytoseiulus)\n3. Tingkatkan kelembaban dengan penyemprotan air\n4. Rotasi pestisida untuk mencegah resistensi\n5. Bersihkan gulma di sekitar tanaman",
+    "1. Semprot Agrimec/Oberon tiap 5 hari.\n" +
+    "2. Basahi tanah.\n" +
+    "3. Beri NPK ½ sendok makan.\n" +
+    "   Alasan: daun rusak karena tungau butuh nutrisi lengkap untuk tumbuh baru.\n" +
+    "4. Rotasi akarisida.\n" +
+    "5. Bersihkan gulma.\n",
+
   target_spot:
-    "1. Semprot fungisida mancozeb atau azoxystrobin\n2. Buang daun yang terinfeksi\n3. Tingkatkan drainase dan sirkulasi udara\n4. Aplikasi fungisida preventif setiap 2 minggu\n5. Gunakan mulsa plastik untuk mencegah percikan",
+    "1. Semprot mancozeb/Amistar tiap 7 hari.\n" +
+    "2. Buang daun bercak.\n" +
+    "3. Beri NPK setelah 3 hari (½ sendok makan).\n" +
+    "   Alasan: Kalium perkuat daun supaya tidak kena bercak lagi.\n" +
+    "4. Drainase harus lancar.\n" +
+    "5. Gunakan mulsa.\n",
+
   yellow_leaf_curl_virus:
-    "1. Kendalikan vektor (kutu kebul) dengan insektisida\n2. Cabut dan bakar tanaman terinfeksi\n3. Tanam varietas yang tahan virus\n4. Gunakan pest net untuk proteksi fisik\n5. Rotasi tanaman dengan tanaman non-inang",
+    "1. Atasi kutu kebul (imidakloprid/abamectin).\n" +
+    "2. Cabut tanaman parah.\n" +
+    "3. Beri NPK 1 sendok makan pada tanaman sehat sekitar area.\n" +
+    "   Alasan: tanaman sehat perlu gizi lengkap agar tahan stress virus & serangan kutu.\n" +
+    "4. Pakai insect net.\n" +
+    "5. Rotasi tanaman.\n",
 };
 
 // Cache elemen dengan null check
